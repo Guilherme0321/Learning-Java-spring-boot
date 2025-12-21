@@ -1,7 +1,9 @@
 package com.learningspringboot.finsmart.controller;
 
+
+import com.learningspringboot.finsmart.dto.TransactionRequestDTO;
 import com.learningspringboot.finsmart.model.Transaction;
-import com.learningspringboot.finsmart.repository.TransactionRepository;
+import com.learningspringboot.finsmart.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,20 +13,20 @@ import java.util.List;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    private final TransactionRepository repository;
+    private final TransactionService service;
 
     @Autowired
-    public TransactionController(TransactionRepository repository) {
-        this.repository = repository;
+    public TransactionController(TransactionService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public Transaction save(@RequestBody Transaction transaction) {
-        return repository.save(transaction);
+    public Transaction save(@RequestBody TransactionRequestDTO transaction) {
+        return service.save(transaction);
     }
 
     @GetMapping
     public List<Transaction> list() {
-        return repository.findAll();
+        return service.list();
     }
 }
