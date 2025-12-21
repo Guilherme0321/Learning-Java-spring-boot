@@ -1,29 +1,41 @@
 package com.learningspringboot.finsmart.model;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String userId;
-    private Double amount;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
     private String description;
+
+    @Column(nullable = false)
     private LocalDateTime date;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     public Transaction() {}
@@ -55,11 +67,11 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -87,7 +99,7 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAi() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 

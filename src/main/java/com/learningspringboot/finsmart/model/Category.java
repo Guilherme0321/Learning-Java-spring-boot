@@ -1,32 +1,31 @@
 package com.learningspringboot.finsmart.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 @Entity
+@Table(name = "category")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
-
+    @Column(nullable = false)
+    private String name;
     private String iconCode;
-
-    private Double monthlyBudget;
+    private BigDecimal monthlyBudget;
 
     public Category(){}
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIconCode() {
@@ -37,11 +36,11 @@ public class Category {
         this.iconCode = iconCode;
     }
 
-    public Double getMonthlyBudget() {
+    public BigDecimal getMonthlyBudget() {
         return monthlyBudget;
     }
 
-    public void setMonthlyBudget(Double monthlyBudget) {
+    public void setMonthlyBudget(BigDecimal monthlyBudget) {
         this.monthlyBudget = monthlyBudget;
     }
 }
