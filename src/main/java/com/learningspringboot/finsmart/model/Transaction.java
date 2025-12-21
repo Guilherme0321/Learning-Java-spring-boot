@@ -40,6 +40,22 @@ public class Transaction {
 
     public Transaction() {}
 
+    public Transaction(
+            String userId,
+            BigDecimal amount,
+            String description,
+            LocalDateTime date,
+            TransactionType type,
+            Category category
+    ) {
+        this.userId = userId;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+        this.type = type;
+        this.category = category;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -49,6 +65,10 @@ public class Transaction {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Category getCategory() {
