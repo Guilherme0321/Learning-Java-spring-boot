@@ -28,6 +28,16 @@ public class Category {
         this.name = name;
     }
 
+    public Category(BigDecimal monthlyBudget, String iconCode, String name) {
+        this.monthlyBudget = monthlyBudget;
+        this.iconCode = iconCode;
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getIconCode() {
         return iconCode;
     }
