@@ -30,8 +30,8 @@ public class Transaction {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
     private TransactionType type;
 
     @ManyToOne
