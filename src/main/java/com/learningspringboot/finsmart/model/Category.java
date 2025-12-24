@@ -20,17 +20,17 @@ public class Category {
 
     public Category(){}
 
+    public Category(String name, String iconCode, BigDecimal monthlyBudget) {
+        this.monthlyBudget = monthlyBudget;
+        this.iconCode = iconCode;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category(BigDecimal monthlyBudget, String iconCode, String name) {
-        this.monthlyBudget = monthlyBudget;
-        this.iconCode = iconCode;
         this.name = name;
     }
 
