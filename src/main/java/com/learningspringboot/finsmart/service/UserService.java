@@ -19,10 +19,10 @@ public class UserService {
     }
 
     public User save(String username, String password) {
-        User user = new User(
-                username,
-                encoder.encode(password)
-        );
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
 
         return userRepository.save(user);
     }
