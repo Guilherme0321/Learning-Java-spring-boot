@@ -10,7 +10,7 @@ import java.util.Date;
 public class JwtService {
     private final String SECRET_KEY = "I-am-a-tea-bot!";
 
-    // TODO: Adicionar mais parametros do usuário
+    // TODO: dicionar mais parametros do usuário
     public String generateToken(String username) {
 
         int second = 1000;
