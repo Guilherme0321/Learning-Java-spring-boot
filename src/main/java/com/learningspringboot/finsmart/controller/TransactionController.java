@@ -1,8 +1,8 @@
 package com.learningspringboot.finsmart.controller;
 
 
-import com.learningspringboot.finsmart.dto.TransactionRequestDTO;
-import com.learningspringboot.finsmart.model.Transaction;
+import com.learningspringboot.finsmart.dto.transaction.TransactionRequestDTO;
+import com.learningspringboot.finsmart.dto.transaction.TransactionResponseDTO;
 import com.learningspringboot.finsmart.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,17 @@ public class TransactionController {
     }
 
     @PostMapping
-    public Transaction save(@RequestBody TransactionRequestDTO transaction) {
+    public TransactionResponseDTO save(@RequestBody TransactionRequestDTO transaction) {
         return service.save(transaction);
     }
 
     @GetMapping
-    public List<Transaction> list() {
+    public List<TransactionResponseDTO> list() {
         return service.list();
+    }
+
+    @DeleteMapping("/{id}")
+    public TransactionResponseDTO delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }
