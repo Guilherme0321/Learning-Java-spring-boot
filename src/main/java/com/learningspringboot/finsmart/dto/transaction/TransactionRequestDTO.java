@@ -1,4 +1,4 @@
-package com.learningspringboot.finsmart.dto;
+package com.learningspringboot.finsmart.dto.transaction;
 
 import com.learningspringboot.finsmart.model.TransactionType;
 
