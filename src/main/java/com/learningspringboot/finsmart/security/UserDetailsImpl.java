@@ -52,6 +52,6 @@ public class UserDetailsImpl implements UserDetails {
     // TODO: adicionar na classe
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "admin");
+        return List.of(() -> "read");
     }
 }
