@@ -1,28 +1,47 @@
 package com.learningspringboot.finsmart.security;
 
-import io.jsonwebtoken.Jwts;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
+import java.util.stream.Collectors;
 
-// TODO: Adicionar verificação de token
-@Component
+@Service
 public class JwtService {
-    private final String SECRET_KEY = "I-am-a-tea-bot!";
 
-    // TODO: dicionar mais parametros do usuário
-    public String generateToken(String username) {
+    private final JwtEncoder encoder;
 
-        int second = 1000;
-        int minute = second * 60;
-        int hour = minute * 60;
 
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + hour)
-                ).compact();
+    private static final long EXPIRATION = 1000 * 60 * 60; // 1s * 60 * 60 = 1h
+
+    public JwtService(JwtEncoder encoder) {
+        this.encoder = encoder;
+    }
+
+    public String generateToken(Authentication authentication) {
+
+        Instant now = Instant.now();
+        String scopes = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "));
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("Learning-Java-spring-boot-jwt")
+                .issuedAt(now)
+                .expiresAt(
+                        now.plusMillis(EXPIRATION)
+                )
+                .subject(authentication.getName())
+                .claim("scope", scopes)
+                .build();
+
+        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
 }
