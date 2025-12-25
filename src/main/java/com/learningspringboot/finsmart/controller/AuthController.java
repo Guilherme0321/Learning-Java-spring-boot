@@ -1,37 +1,32 @@
 package com.learningspringboot.finsmart.controller;
 
-import com.learningspringboot.finsmart.security.JwtService;
+import com.learningspringboot.finsmart.model.User;
+import com.learningspringboot.finsmart.service.AuthService;
 import com.learningspringboot.finsmart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final JwtService jwtService;
+    private final AuthService authService;
     private final UserService userService;
 
     @Autowired
-    public AuthController(JwtService jwtService, UserService userService) {
-        this.jwtService = jwtService;
+    public AuthController(AuthService authService, UserService userService) {
+        this.authService = authService;
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
-
-        userService.save(username, password);
-
-        return "Usuário criado com sucesso!";
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password) {
+        return authService.authenticate(username, password);
     }
 
-    // TODO: Fazer a validação completa
-    @PostMapping("/login")
-    public String login(@RequestParam String username) {
-        return jwtService.generateToken(username);
+    @PostMapping("/register")
+    public User register(@RequestParam String username, @RequestParam String password) {
+        return userService.save(username, password);
     }
 }
