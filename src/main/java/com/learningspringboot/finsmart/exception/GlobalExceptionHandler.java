@@ -1,10 +1,12 @@
 package com.learningspringboot.finsmart.exception;
 
-import jdk.jfr.Experimental;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -45,6 +47,20 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataIntegrityViolation(DataIntegrityViolationException exception) {
+        String errorMessage = "Violação de integridade de dados. Detalhes: " + Objects.requireNonNull(exception.getRootCause()).getMessage();
+
+        ApiError error = new ApiError(
+                HttpStatus.CONFLICT.value(),
+                errorMessage
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(error);
     }
 }
