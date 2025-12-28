@@ -2,8 +2,6 @@ package com.learningspringboot.finsmart.controller;
 
 import com.learningspringboot.finsmart.dto.category.CategoryRequestDTO;
 import com.learningspringboot.finsmart.dto.category.CategoryResponseDTO;
-import com.learningspringboot.finsmart.model.Category;
-import com.learningspringboot.finsmart.repository.CategoryRepository;
 import com.learningspringboot.finsmart.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

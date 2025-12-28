@@ -1,7 +1,6 @@
 package com.learningspringboot.finsmart.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
