@@ -1,4 +1,4 @@
 INSERT INTO users (username, password)
 VALUES
-    ('admin', '$2a$12$H.sFok5GOsKLvg3yEMdte.cmtojWx6PQBh8DKP5uSM/x254qd8f8C')
+    ('administrator', '$2a$12$URok/B/o/ugW5b3Df/AZquQ4sODXr1RSpKJNywoVfJNHwW6Ne6KyG')
 ON CONFLICT (username) DO NOTHING;
