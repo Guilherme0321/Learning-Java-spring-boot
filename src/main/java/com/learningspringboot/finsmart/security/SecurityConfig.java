@@ -33,36 +33,6 @@ public class SecurityConfig {
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
 
-//    @Bean
-//    public RSAPublicKey publicKey() throws Exception {
-//
-//        byte[] pem = publicKey.getContentAsByteArray();
-//        String key = new String(pem)
-//                .replace("-----BEGIN PUBLIC KEY-----", "")
-//                .replace("-----END PUBLIC KEY-----", "")
-//                .replaceAll("\\s", "");
-//
-//        byte[] decoded = Base64.getDecoder().decode(key);
-//        return (RSAPublicKey) KeyFactory.getInstance("RSA")
-//                .generatePublic(
-//                        new X509EncodedKeySpec(decoded)
-//                );
-//    }
-//
-//    @Bean
-//    public RSAPrivateKey privateKey() throws Exception {
-//        byte[] pem = privateKey.getContentAsByteArray();
-//        String key = new String(pem)
-//                .replace("-----BEGIN PRIVATE KEY-----", "")
-//                .replace("-----END PRIVATE KEY-----", "")
-//                .replaceAll("\\s", "");
-//
-//        byte[] decoded = Base64.getDecoder().decode(key);
-//        return (RSAPrivateKey) KeyFactory.getInstance("RSA")
-//
-//                .generatePrivate(new PKCS8EncodedKeySpec(decoded));
-//    }
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
