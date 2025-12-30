@@ -2,6 +2,7 @@ package com.learningspringboot.finsmart.service;
 
 import com.learningspringboot.finsmart.dto.category.CategoryRequestDTO;
 import com.learningspringboot.finsmart.dto.category.CategoryResponseDTO;
+import com.learningspringboot.finsmart.dto.category.CategoryValidator;
 import com.learningspringboot.finsmart.exception.CategoryNotFoundException;
 import com.learningspringboot.finsmart.model.Category;
 import com.learningspringboot.finsmart.repository.CategoryRepository;
@@ -14,10 +15,12 @@ import java.util.List;
 @Service
 public class CategoryService {
     private final CategoryRepository repository;
+    private final CategoryValidator validator;
 
     @Autowired
-    public CategoryService(CategoryRepository repository) {
+    public CategoryService(CategoryRepository repository, CategoryValidator validator) {
         this.repository = repository;
+        this.validator = validator;
     }
 
     public List<CategoryResponseDTO> list() {
@@ -34,16 +37,7 @@ public class CategoryService {
     }
 
     public CategoryResponseDTO save(CategoryRequestDTO categoryRequestDTO) {
-        if(categoryRequestDTO.getName() == null) {
-            throw new IllegalArgumentException("O nome da categoria deve estar preenchido!");
-        }
-
-        BigDecimal zero = BigDecimal.valueOf(0.0);
-        BigDecimal amount = categoryRequestDTO.getMonthlyBudget();
-
-        if(amount != null && amount.compareTo(zero) < 0) {
-            throw new IllegalArgumentException("O valor associado à categoria deve ser maior que 0!");
-        }
+        validator.validate(categoryRequestDTO);
 
         Category category = new Category(
                 categoryRequestDTO.getName(),

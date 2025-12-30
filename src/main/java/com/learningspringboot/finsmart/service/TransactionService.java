@@ -2,6 +2,7 @@ package com.learningspringboot.finsmart.service;
 
 import com.learningspringboot.finsmart.dto.transaction.TransactionRequestDTO;
 import com.learningspringboot.finsmart.dto.transaction.TransactionResponseDTO;
+import com.learningspringboot.finsmart.dto.transaction.TransactionValidator;
 import com.learningspringboot.finsmart.exception.CategoryNotFoundException;
 import com.learningspringboot.finsmart.exception.TransactionNotFoundException;
 import com.learningspringboot.finsmart.model.Category;
@@ -10,42 +11,25 @@ import com.learningspringboot.finsmart.repository.CategoryRepository;
 import com.learningspringboot.finsmart.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class TransactionService {
 
-    public final CategoryRepository categoryRepository;
-    public final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
+    private final TransactionValidator validator;
 
     @Autowired
-    public TransactionService(CategoryRepository categoryRepository, TransactionRepository transactionRepository) {
+    public TransactionService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TransactionValidator validator) {
         this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
+        this.validator = validator;
     }
 
     public TransactionResponseDTO save(TransactionRequestDTO transactionRequestDTO) {
 
-        BigDecimal zero = BigDecimal.valueOf(0.0);
-
-        if(transactionRequestDTO == null) {
-            throw new IllegalArgumentException("Não permitido passagem de valor nulo para criação do objeto Transaction");
-        }
-
-        if(!transactionRequestDTO.getDate().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("A data referente a quando a transação foi feita deve ser menor que a atual!");
-        }
-
-        if(transactionRequestDTO.getAmount().compareTo(zero) < 0) {
-            throw new IllegalArgumentException("O valor da transação deve ser maior que 0!");
-        }
-
-        if(transactionRequestDTO.getUserId() == null) {
-            throw new IllegalArgumentException("O ID de usuário invalido!");
-        }
+        validator.validate(transactionRequestDTO);
 
         Category category = categoryRepository.findById(transactionRequestDTO.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(transactionRequestDTO.getCategoryId()));
