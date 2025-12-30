@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public class RegisterRequest {
 
     @NotBlank(message = "Username é obrigatório")
-    @Size(min = 8, max = 50, message = "Username deve conter entre 8 e 50 caracteres")
+    @Size(min = 8, max = 20, message = "Username deve conter entre 8 e 20 caracteres")
     private String username;
 
     @NotBlank(message = "Senha é obrigatório")
