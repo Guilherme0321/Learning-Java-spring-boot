@@ -16,15 +16,15 @@ public class TransactionValidator {
         }
 
         if(!transactionRequestDTO.getDate().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("A data referente a quando a transação foi feita deve ser menor que a atual!");
+            throw new IllegalArgumentException("A data referente a quando a transação foi feita deve ser menor que a atual");
         }
 
         if(transactionRequestDTO.getAmount().compareTo(zero) < 0) {
-            throw new IllegalArgumentException("O valor da transação deve ser maior que 0!");
+            throw new IllegalArgumentException("O valor da transação deve ser maior que 0");
         }
 
-        if(transactionRequestDTO.getUserId() == null) {
-            throw new IllegalArgumentException("O ID de usuário invalido!");
+        if(transactionRequestDTO.getUserId() == null || transactionRequestDTO.getUserId().isEmpty()) {
+            throw new IllegalArgumentException("O ID de usuário invalido ou não foi preenchido");
         }
     }
 }
