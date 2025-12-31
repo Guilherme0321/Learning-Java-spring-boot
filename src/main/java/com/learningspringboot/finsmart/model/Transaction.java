@@ -13,8 +13,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -41,7 +42,7 @@ public class Transaction {
     public Transaction() {}
 
     public Transaction(
-            String userId,
+            User userId,
             BigDecimal amount,
             String description,
             LocalDateTime date,
@@ -79,11 +80,11 @@ public class Transaction {
         this.category = category;
     }
 
-    public String getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
