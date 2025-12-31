@@ -27,6 +27,7 @@ public class GlobalExceptionHandler {
                 errors.toString()
         );
 
+
         return  ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(error);
@@ -61,6 +62,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TransactionNotFoundException.class)
     public ResponseEntity<ApiError> handleTransactionNotFoundException(TransactionNotFoundException exception) {
 
+        ApiError error = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException exception) {
         ApiError error = new ApiError(
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage()
