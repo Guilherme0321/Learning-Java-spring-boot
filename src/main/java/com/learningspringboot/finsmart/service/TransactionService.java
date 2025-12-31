@@ -5,11 +5,15 @@ import com.learningspringboot.finsmart.dto.transaction.TransactionResponseDTO;
 import com.learningspringboot.finsmart.dto.transaction.TransactionValidator;
 import com.learningspringboot.finsmart.exception.CategoryNotFoundException;
 import com.learningspringboot.finsmart.exception.TransactionNotFoundException;
+import com.learningspringboot.finsmart.exception.UserNotFoundException;
 import com.learningspringboot.finsmart.model.Category;
 import com.learningspringboot.finsmart.model.Transaction;
+import com.learningspringboot.finsmart.model.User;
 import com.learningspringboot.finsmart.repository.CategoryRepository;
 import com.learningspringboot.finsmart.repository.TransactionRepository;
+import com.learningspringboot.finsmart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -19,14 +23,17 @@ public class TransactionService {
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionValidator validator;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TransactionService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TransactionValidator validator) {
+    public TransactionService(CategoryRepository categoryRepository, TransactionRepository transactionRepository, TransactionValidator validator, UserRepository userRepository) {
         this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
         this.validator = validator;
+        this.userRepository = userRepository;
     }
 
+    // TODO: pegar o userId do Authentication, ao inves do DTO
     public TransactionResponseDTO save(TransactionRequestDTO transactionRequestDTO) {
 
         validator.validate(transactionRequestDTO);
@@ -34,8 +41,11 @@ public class TransactionService {
         Category category = categoryRepository.findById(transactionRequestDTO.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(transactionRequestDTO.getCategoryId()));
 
+        User user = userRepository.findById(transactionRequestDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(transactionRequestDTO.getUserId()));
+
         Transaction transaction = new Transaction(
-                transactionRequestDTO.getUserId(),
+                user,
                 transactionRequestDTO.getAmount(),
                 transactionRequestDTO.getDescription(),
                 transactionRequestDTO.getDate(),
