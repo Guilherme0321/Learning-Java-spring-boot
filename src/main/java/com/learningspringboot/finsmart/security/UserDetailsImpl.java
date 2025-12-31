@@ -2,10 +2,9 @@ package com.learningspringboot.finsmart.security;
 
 import com.learningspringboot.finsmart.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
-import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -25,33 +24,31 @@ public class UserDetailsImpl implements UserDetails {
         return user.getPassword();
     }
 
-    // TODO: adicionar na classe
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return user.isAccountNonExpired();
     }
 
-    // TODO: adicionar na classe
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountNonLocked();
     }
 
-    // TODO: adicionar na classe
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return user.isCredentialsNonExpired();
     }
 
-    // TODO: adicionar na classe
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return user.isEnabled();
     }
 
-    // TODO: adicionar na classe
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        return user.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().name()))
+                .toList();
     }
 }
