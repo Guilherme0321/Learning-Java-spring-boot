@@ -47,8 +47,8 @@ public class SecurityConfig {
 
                         // privadas
                     .requestMatchers(HttpMethod.GET, "/category/**").authenticated()
-                    .requestMatchers(HttpMethod.POST, "/category").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/category/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/category").hasAuthority("SCOPE_ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/category/**").hasAuthority("SCOPE_ADMIN")
                     .requestMatchers("/transactions/**").authenticated()
                         .anyRequest().authenticated()
                 )
