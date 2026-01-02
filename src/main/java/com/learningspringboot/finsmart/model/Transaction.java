@@ -15,7 +15,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -42,14 +42,14 @@ public class Transaction {
     public Transaction() {}
 
     public Transaction(
-            User userId,
+            User user,
             BigDecimal amount,
             String description,
             LocalDateTime date,
             TransactionType type,
             Category category
     ) {
-        this.userId = userId;
+        this.user = user;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -68,6 +68,10 @@ public class Transaction {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -80,12 +84,12 @@ public class Transaction {
         this.category = category;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public BigDecimal getAmount() {
