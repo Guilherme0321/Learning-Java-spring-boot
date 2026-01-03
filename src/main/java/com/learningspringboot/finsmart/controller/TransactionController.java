@@ -23,11 +23,9 @@ public class TransactionController {
         this.service = service;
     }
 
-    // TODO: ADICIONAR LÓGICA PARA PEGAR O USERID DO AUTHENTICATION
     @PostMapping
     public ResponseEntity<TransactionResponseDTO> save(@RequestBody TransactionRequestDTO transaction, Authentication authentication) {
-        System.out.println(authentication.getName());
-        TransactionResponseDTO transactionResponseDTO = service.save(transaction);
+        TransactionResponseDTO transactionResponseDTO = service.save(transaction, authentication);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(transactionResponseDTO);
@@ -35,13 +33,14 @@ public class TransactionController {
 
     // TODO: Adicionar paging
     @GetMapping
-    public List<TransactionResponseDTO> list() {
-        return service.list();
+    public ResponseEntity<List<TransactionResponseDTO>> list(Authentication authentication) {
+        List<TransactionResponseDTO> responseDTOS = service.list(authentication);
+        return ResponseEntity.ok(responseDTOS);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
+        service.delete(id, authentication);
         return ResponseEntity
                 .noContent()
                 .build();
