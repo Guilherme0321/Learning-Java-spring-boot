@@ -13,6 +13,7 @@ import com.learningspringboot.finsmart.repository.CategoryRepository;
 import com.learningspringboot.finsmart.repository.TransactionRepository;
 import com.learningspringboot.finsmart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -34,15 +35,15 @@ public class TransactionService {
     }
 
     // TODO: pegar o userId do Authentication, ao inves do DTO
-    public TransactionResponseDTO save(TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO save(TransactionRequestDTO transactionRequestDTO, Authentication authentication) {
 
         validator.validate(transactionRequestDTO);
 
         Category category = categoryRepository.findById(transactionRequestDTO.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(transactionRequestDTO.getCategoryId()));
 
-        User user = userRepository.findById(transactionRequestDTO.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(transactionRequestDTO.getUserId()));
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException(authentication.getName()));
 
         Transaction transaction = new Transaction(
                 user,
@@ -65,8 +66,12 @@ public class TransactionService {
         );
     }
 
-    public List<TransactionResponseDTO> list() {
-        List<Transaction> transactions = transactionRepository.findAll();
+    public List<TransactionResponseDTO> list(Authentication authentication) {
+
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException(authentication.getName()));
+
+        List<Transaction> transactions = transactionRepository.findByUser_Id(user.getId());
         return transactions.stream()
                 .map(transaction -> {
                     return new TransactionResponseDTO(
@@ -80,23 +85,17 @@ public class TransactionService {
                 }).toList();
     }
 
-    public TransactionResponseDTO delete(Long id) {
+    public void delete(Long id, Authentication authentication) {
         if(id == null) {
             throw new IllegalArgumentException("O campo ID deve estar preenchido!");
         }
 
-        Transaction transactionToBeDeleted = transactionRepository.findById(id)
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException(authentication.getName()));
+
+        Transaction transactionToBeDeleted = transactionRepository.findByIdAndUser_Id(id, user.getId())
                 .orElseThrow(() -> new TransactionNotFoundException(id));
 
         transactionRepository.delete(transactionToBeDeleted);
-
-        return new TransactionResponseDTO(
-                transactionToBeDeleted.getId(),
-                transactionToBeDeleted.getCategory(),
-                transactionToBeDeleted.getType(),
-                transactionToBeDeleted.getDate(),
-                transactionToBeDeleted.getAmount(),
-                transactionToBeDeleted.getDescription()
-        );
     }
 }
