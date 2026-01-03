@@ -22,9 +22,5 @@ public class TransactionValidator {
         if(transactionRequestDTO.getAmount().compareTo(zero) < 0) {
             throw new IllegalArgumentException("O valor da transação deve ser maior que 0");
         }
-
-        if(transactionRequestDTO.getUserId() == null) {
-            throw new IllegalArgumentException("O ID de usuário invalido ou não foi preenchido");
-        }
     }
 }
