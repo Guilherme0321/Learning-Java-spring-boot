@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 public class TransactionRequestDTO {
 
-    // TODO: remover userId
-    private Long userId;
     private BigDecimal amount;
     private String description;
     private LocalDateTime date;
@@ -20,7 +18,6 @@ public class TransactionRequestDTO {
     public TransactionRequestDTO() {};
 
     public TransactionRequestDTO(
-            Long userId,
             BigDecimal amount,
             String description,
             LocalDateTime date,
@@ -29,7 +26,6 @@ public class TransactionRequestDTO {
             TransactionType type,
             Long categoryId
     ) {
-        this.userId = userId;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -37,10 +33,6 @@ public class TransactionRequestDTO {
         this.updatedAt = updatedAt;
         this.type = type;
         this.categoryId = categoryId;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public BigDecimal getAmount() {
